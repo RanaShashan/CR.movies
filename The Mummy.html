@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>The Boys | MOVIES</title>
+    <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <!-- Main Video Element -->
+        <video id="trail1" autoplay muted loop></video><!--loop-->
+
+        <!-- Navigation Bar -->
+        <nav>
+            <div class="logo_ul">
+                <img src="img/logo.png" alt="Logo">
+                <ul>
+                    <li><a href="#" id="home">Home</a></li>
+                    <li><a href="#" id="series">Series</a></li>
+                    <li><a href="#" id="movies">Movies</a></li>
+                    <li><a href="#" id="kids">Kids</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <div class="search_user">
+                 <input type="text" placeholder="Search..." id="search_input">
+                   <img src="img/user.jpg" alt="">
+                     <div class="search">
+                     
+                                 
+                </div>
+            </div>
+            </div>
+
+            
+        </nav>
+
+        <!-- Movie Content Section -->
+        <div class="content">
+            <h1 id="title1">Money Heist</h1>
+            <p id="description1">A group of vigilantes set out to take down corrupt superheroes who abuse their superpowers.</p>
+            <div class="details">
+                <h6>A Netflix Original Film</h6>
+                <h5 id="gen1">Thriller, Action</h5>
+                <h4 id="date1">2014</h4>
+                <h3 id="rate1"><span>IMDB</span><i class="bi bi-star-fill">9.6</i></h3>
+            </div>
+            <div class="btns">
+
+                <a href="#" id="play">Trailer <i class="bi bi-play-fill"></i></a>
+                <a href="#" id="watch">Online <i class="bi bi-play-fill"></i></a>
+                <a href="#" download="The Mummy 480ph" id="low_q1">480ph <i class="bi bi-cloud-arrow-down-fill"></i></a>
+                <a href="#" download="The Mummy 720ph" id="medium_q1">720ph <i class="bi bi-cloud-arrow-down-fill"></i></a>
+                <a href="#" download="The Mummy 1080ph" id="high_q1">1080ph <i class="bi bi-cloud-arrow-down-fill"></i></a>
+            </div>
+        </div>
+
+        <!-- Full-Screen Video Overlay -->
+        <div id="videoOverlay" style="display: none;">
+            <video id="moviePlayer" controls autoplay></video>
+            <button id="closeOverlay">Close</button>
+        </div>
+
+        <!-- Popular Movies Section -->
+        <section>
+            <h4>Popular</h4>
+            <i class="bi bi-chevron-left"></i>
+            <i class="bi bi-chevron-right"></i>
+            <div class="cards">
+                <a href="#" class="card">
+                    <img src="img/the boys.jpg" alt="The Boys" class="poster">
+                    <div class="rest_card">
+                        <img src="img/the boys1.jpg" alt="The Boys">
+                        <div class="cont">
+                            <h4>The Boys</h4>
+                            <div class="sup">
+                                <p>Action, 2022</p>
+                                <h3><span>IMDB</span><i class="bi bi-star-fill">9.6</i></h3>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+    </header>
+
+    <script src="app.js" defer></script>
+    <script>
+        const json_url = "movie.json"; // Updated URL to movie.json
+
+        fetch(json_url)
+            .then(response => response.json())
+            .then(data => {
+                // Filter to get the specific movie object for "John Wick"
+                let movie_array = data.filter(ele => ele.name === "The Mummy");
+
+                if (movie_array.length > 0) {
+                    const movie = movie_array[0]; // Access the first element from the filtered result
+
+                    // Update elements with movie details
+                    document.getElementById('title1').innerText = movie.name;
+                    document.getElementById('description1').innerText = movie.description;
+                    document.getElementById('trail1').src = movie.trailer;
+                    document.getElementById('watch').src = movie.trailer;
+                    document.getElementById('low_q1').href = movie.low;
+                    document.getElementById('medium_q1').href = movie.medium;
+                    document.getElementById('high_q1').href = movie.high;
+                    document.getElementById('gen1').innerText = movie.genre;
+                    document.getElementById('date1').innerText = movie.date;
+                    document.getElementById('rate1').innerHTML = `<span>IMDB</span> <i class="bi bi-star-fill"></i> ${movie.imdb}`;
+
+                    // Add an event listener to the "Watch" button
+                    document.getElementById('watch').addEventListener('click', function (e) {
+                        e.preventDefault();
+                        playMovie(movie.movie);
+                    });
+                }
+            })
+            .catch(error => console.error("Error loading movie data:", error));
+
+        // Function to play the movie with enhanced features
+function playMovie(src) {
+    // Check if movie player already exists, if yes, remove it
+    const existingPlayer = document.getElementById('moviePlayerContainer');
+    if (existingPlayer) existingPlayer.remove();
+
+    // Create a container for the video player and controls
+    const videoContainer = document.createElement('div');
+    videoContainer.id = 'moviePlayerContainer';
+    videoContainer.style.position = 'fixed';
+    videoContainer.style.top = '0';
+    videoContainer.style.left = '0';
+    videoContainer.style.width = '100%';
+    videoContainer.style.height = '100%';
+    videoContainer.style.zIndex = '9999'; // High z-index to ensure video stays on top
+    videoContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.9)'; // Semi-transparent black background
+    videoContainer.style.display = 'flex';
+    videoContainer.style.alignItems = 'center';
+    videoContainer.style.justifyContent = 'center';
+    videoContainer.style.flexDirection = 'column';
+    videoContainer.style.pointerEvents = 'all'; // Allow interactions with video controls
+
+    // Disable background scrolling and pointer events while video is active
+    document.body.style.overflow = 'hidden'; // Disable scrolling
+    document.body.style.pointerEvents = 'none'; // Disable background interaction
+
+    // Create the video player element
+    const videoPlayer = document.createElement('video');
+    videoPlayer.id = 'moviePlayer';
+    videoPlayer.src = src;
+    videoPlayer.controls = true;
+    videoPlayer.autoplay = true;
+    videoPlayer.style.width = '80%';
+    videoPlayer.style.height = 'auto';
+    videoPlayer.style.maxHeight = '90%';
+    videoPlayer.style.backgroundColor = '#000';
+    videoPlayer.muted = false;
+
+    // Add a close button
+    const closeButton = document.createElement('button');
+    closeButton.innerText = 'Close';
+    closeButton.style.position = 'absolute';
+    closeButton.style.top = '20px';
+    closeButton.style.right = '20px';
+    closeButton.style.padding = '10px 20px';
+    closeButton.style.backgroundColor = '#ff0000';
+    closeButton.style.color = '#fff';
+    closeButton.style.border = 'none';
+    closeButton.style.cursor = 'pointer';
+    closeButton.style.fontSize = '16px';
+    closeButton.style.zIndex = '10000'; // Ensure close button stays on top
+    closeButton.addEventListener('click', () => {
+        videoContainer.remove();
+        // Re-enable background scrolling and pointer events after video is closed
+        document.body.style.overflow = 'auto'; // Re-enable scrolling
+        document.body.style.pointerEvents = 'auto'; // Allow background interactions
+    });
+
+    // Add volume control
+    const volumeControl = document.createElement('input');
+    volumeControl.type = 'range';
+    volumeControl.min = '0';
+    volumeControl.max = '1';
+    volumeControl.step = '0.1';
+    volumeControl.value = videoPlayer.volume;
+    volumeControl.style.marginTop = '10px';
+    volumeControl.style.zIndex = '10001'; // Ensure volume control stays on top
+    volumeControl.addEventListener('input', (event) => {
+        videoPlayer.volume = event.target.value;
+    });
+
+    // Add playback speed control
+    const speedControl = document.createElement('select');
+    const speeds = [0.5, 1, 1.5, 2];
+    speeds.forEach(speed => {
+        const option = document.createElement('option');
+        option.value = speed;
+        option.textContent = `${speed}x`;
+        speedControl.appendChild(option);
+    });
+    speedControl.value = '1';
+    speedControl.style.marginLeft = '10px';
+    speedControl.style.zIndex = '10001'; // Ensure speed control stays on top
+    speedControl.addEventListener('change', (event) => {
+        videoPlayer.playbackRate = parseFloat(event.target.value);
+    });
+
+    // Subtitle support (Example: Add .vtt file URL as a source)
+    const subtitleTrack = document.createElement('track');
+    subtitleTrack.kind = 'subtitles';
+    subtitleTrack.src = 'path/to/subtitles.vtt'; // Replace with actual subtitle file URL
+    subtitleTrack.srclang = 'en';
+    subtitleTrack.label = 'English';
+    videoPlayer.appendChild(subtitleTrack);
+    subtitleTrack.default = true;
+
+    // Append elements to the container
+    videoContainer.appendChild(closeButton);
+    videoContainer.appendChild(videoPlayer);
+    videoContainer.appendChild(volumeControl);
+    videoContainer.appendChild(speedControl);
+
+    // Append the container to the body
+    document.body.appendChild(videoContainer);
+
+    // Start playing the video
+    videoPlayer.play();
+}
+
+    </script>
+</body>
+</html>
+
+
+
+
+
