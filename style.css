@@ -78,8 +78,7 @@ header nav .logo_ul {
     display: flex;
     align-items: center;
     justify-content: center;
-     max-width: 50px; /* Adjust the width as needed */
-    max-height: 20px; /* Maintain the aspect ratio */
+     width: 50px; 
    
     
 }
