@@ -74,18 +74,19 @@ header nav{
     font-size: large;
 
 }
-
 header nav .logo_ul {
     display: flex;
     align-items: center;
     justify-content: center;
-     width: 300px; /* Adjust the width as needed */
+    width: 300px; /* Adjust the width as needed */
     height: auto; /* Maintain the aspect ratio */
-
 }
 header nav .logo_ul img{
-    width: 100px; 
+    width: 100px;
+
 }
+
+
 header nav .logo_ul ul{
     display: flex;
     align-items: center;
