@@ -860,4 +860,14 @@ header section:hover .bi-chevron-left{
             align-items: center;
             margin-left: -12px;
         }
+        header {
+    /* z-index: 10; */
+    /* position: absolute; */
+    /* width: 92%; */
+    /* height: 92%; */
+    /* border: 1px solid rgb(223, 219, 219); */
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0px 10px 25px -8px black;
+}
     }
