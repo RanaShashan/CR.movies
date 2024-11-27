@@ -605,7 +605,7 @@ header section:hover .bi-chevron-left{
         }
     
         header {
-            position: relative;
+            position: fixed;
             width: 100vw; /* Use viewport width */
             height: 100vh;
             margin: 0;
