@@ -858,7 +858,7 @@ header section:hover .bi-chevron-left{
             min-width: 60px;
             min-height: 20px;
             text-align: center;
-            z-index: -1; /* Ensure buttons are above other elements */
+            z-index: 10; /* Ensure buttons are above other elements */
         }
     
         .btns {
