@@ -855,14 +855,14 @@ header section:hover .bi-chevron-left{
             min-width: 60px;
             min-height: 20px;
             text-align: center;
-            z-index: 1; /* Ensure buttons are above other elements */
+            z-index: 10; /* Ensure buttons are above other elements */
         }
     
         .btns {
-            margin-top: 20px;
+            margin-top: 220px;
             display: flex;
             align-items: center;
-            margin-left: 18px;
+            margin-left: 1px;
         }
 
 
